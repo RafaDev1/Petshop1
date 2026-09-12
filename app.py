@@ -10,7 +10,7 @@ LOGIN_FAIL = Counter('login_fail_total','Failed login')
 
 USERNAME='admin'
 PASSWORD='PetShop123'
-TOTP_SECRET='REEMPLAZAR_SECRET'
+TOTP_SECRET='JBSWY3DPEHPK3PXP'
 
 products=[
  {'name':'Dog Food','price':'20 USD'},
