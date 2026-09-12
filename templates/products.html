@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
 
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>PetShop Premium</title>
 
@@ -15,103 +17,70 @@ body{
 }
 
 header{
-
     background:#1976d2;
     color:white;
-
     padding:20px 40px;
-
     display:flex;
     justify-content:space-between;
     align-items:center;
 }
 
 .menu a{
-
     color:white;
     text-decoration:none;
-
     margin-left:20px;
 }
 
 .banner{
-
     background:#2196f3;
-
     color:white;
-
     text-align:center;
-
     padding:60px;
 }
 
 .products{
-
     display:grid;
-
-    grid-template-columns:
-    repeat(auto-fit,minmax(250px,1fr));
-
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
     gap:20px;
-
     padding:30px;
 }
 
 .card{
-
     background:white;
-
     border-radius:15px;
-
     overflow:hidden;
-
-    box-shadow:
-    0 3px 10px rgba(0,0,0,.15);
+    box-shadow:0 3px 10px rgba(0,0,0,.15);
 }
 
 .card img{
-
     width:100%;
-    height:200px;
-
+    height:220px;
     object-fit:cover;
 }
 
 .info{
-
     padding:15px;
 }
 
 .price{
-
     font-size:22px;
     color:#4caf50;
     font-weight:bold;
 }
 
 .btn{
-
     width:100%;
-
     border:none;
-
     background:#1976d2;
-
     color:white;
-
     padding:12px;
-
     cursor:pointer;
 }
 
 footer{
-
     background:#222;
-
     color:white;
-
     text-align:center;
-
     padding:20px;
 }
 
@@ -126,11 +95,8 @@ footer{
     <h2>🐾 PetShop Premium</h2>
 
     <div class="menu">
-
         /productsProductos</a>
-
         /logoutCerrar sesión</a>
-
     </div>
 
 </header>
@@ -139,23 +105,25 @@ footer{
 
     <h1>Todo para tu mascota</h1>
 
+    <p>Los mejores productos para perros y gatos</p>
+
 </div>
 
 <div class="products">
 
+    {% for product in products %}
+
     <div class="card">
 
-        https://images.unsplash.com/photo-1517849845537-4d257902454a
+        {{ product.image }}
 
         <div class="info">
 
-            <h3>Alimento Premium</h3>
+            <h3>{{ product.name }}</h3>
 
-            <p>
-                Nutrición balanceada para perros.
+            <p class="price">
+                {{ product.price }}
             </p>
-
-            <p class="price">$19.99</p>
 
             <button class="btn">
                 Agregar al carrito
@@ -165,27 +133,7 @@ footer{
 
     </div>
 
-    <div class="card">
-
-        https://images.unsplash.com/photo-1548199973-03cce0bbc87b
-
-        <div class="info">
-
-            <h3>Collar Inteligente</h3>
-
-            <p>
-                Collar con GPS integrado.
-            </p>
-
-            <p class="price">$29.99</p>
-
-            <button class="btn">
-                Agregar al carrito
-            </button>
-
-        </div>
-
-    </div>
+    {% endfor %}
 
 </div>
 
@@ -199,4 +147,5 @@ footer{
 </footer>
 
 </body>
+
 </html>

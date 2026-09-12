@@ -1,92 +1,75 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PetShop - Login</title>
 
-    <style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        *{
-            box-sizing:border-box;
-            font-family:'Segoe UI',sans-serif;
-        }
+<title>PetShop Login</title>
 
-        body{
+<style>
 
-            margin:0;
-            height:100vh;
+*{
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
 
-            display:flex;
-            justify-content:center;
-            align-items:center;
+body{
+    margin:0;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(135deg,#1976d2,#42a5f5);
+}
 
-            background:linear-gradient(
-                135deg,
-                #1976d2,
-                #42a5f5
-            );
-        }
+.card{
+    width:420px;
+    background:white;
+    border-radius:20px;
+    padding:40px;
+    box-shadow:0 10px 30px rgba(0,0,0,.2);
+    text-align:center;
+}
 
-        .card{
+h1{
+    color:#1976d2;
+}
 
-            width:420px;
+p{
+    color:#666;
+}
 
-            background:white;
-            border-radius:20px;
+input{
+    width:100%;
+    padding:15px;
+    margin-bottom:15px;
+    border:1px solid #ddd;
+    border-radius:10px;
+}
 
-            padding:40px;
+button{
+    width:100%;
+    border:none;
+    padding:15px;
+    border-radius:10px;
+    background:#1976d2;
+    color:white;
+    cursor:pointer;
+}
 
-            box-shadow:
-            0 10px 30px rgba(0,0,0,.2);
+button:hover{
+    background:#1565c0;
+}
 
-            text-align:center;
-        }
+.error{
+    color:red;
+    margin-bottom:15px;
+}
 
-        h1{
-            color:#1976d2;
-            margin-bottom:10px;
-        }
+</style>
 
-        p{
-            color:#666;
-            margin-bottom:25px;
-        }
-
-        input{
-
-            width:100%;
-            padding:15px;
-
-            margin-bottom:15px;
-
-            border:1px solid #ddd;
-            border-radius:10px;
-        }
-
-        button{
-
-            width:100%;
-
-            border:none;
-
-            padding:15px;
-
-            border-radius:10px;
-
-            background:#1976d2;
-            color:white;
-
-            font-size:18px;
-            cursor:pointer;
-        }
-
-        button:hover{
-
-            background:#1565c0;
-        }
-
-    </style>
 </head>
 
 <body>
@@ -95,16 +78,15 @@
 
     <h1>🐾 PetShop</h1>
 
-    <p>
-        Plataforma de productos para mascotas
-    </p>
+    <p>Plataforma de productos para mascotas</p>
+
     {% if error %}
-    <p style="color:red;">
+    <div class="error">
         {{ error }}
-    </p>
+    </div>
     {% endif %}
 
-    /Login
+    /login
 
         <input
             type="text"
@@ -127,4 +109,5 @@
 </div>
 
 </body>
+
 </html>
