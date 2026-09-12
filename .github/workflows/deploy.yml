@@ -1,0 +1,20 @@
+name: Deploy PetShop
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: petshop-demo
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
