@@ -1,10 +1,250 @@
-<html>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+
+<meta charset="UTF-8">
+
+<title>PetShop Premium</title>
+
+<style>
+
+body{
+    margin:0;
+    font-family:'Segoe UI',sans-serif;
+    background:#f5f5f5;
+}
+
+header{
+
+    background:#1976d2;
+    color:white;
+
+    padding:20px 40px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.menu a{
+    color:white;
+    text-decoration:none;
+    margin-left:20px;
+}
+
+.banner{
+
+    height:300px;
+
+    background:
+    linear-gradient(
+    rgba(0,0,0,.35),
+    rgba(0,0,0,.35)),
+    url('https://images.unsplash.com/photo-1517849845537-4d257902454a');
+
+    background-size:cover;
+    background-position:center;
+
+    color:white;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    font-size:42px;
+    font-weight:bold;
+}
+
+.products{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(auto-fit,minmax(280px,1fr));
+
+    gap:25px;
+
+    padding:30px;
+}
+
+.card{
+
+    background:white;
+
+    border-radius:15px;
+
+    overflow:hidden;
+
+    box-shadow:0 4px 15px rgba(0,0,0,.15);
+}
+
+.card img{
+
+    width:100%;
+    height:220px;
+
+    object-fit:cover;
+}
+
+.info{
+    padding:20px;
+}
+
+.price{
+    color:#4CAF50;
+    font-size:24px;
+    font-weight:bold;
+    margin:10px 0;
+}
+
+button{
+
+    width:100%;
+    padding:12px;
+
+    border:none;
+    border-radius:10px;
+
+    background:#1976d2;
+    color:white;
+
+    cursor:pointer;
+}
+
+button:hover{
+    background:#0d5ab9;
+}
+
+footer{
+
+    margin-top:30px;
+
+    text-align:center;
+
+    background:#222;
+    color:white;
+
+    padding:20px;
+}
+
+</style>
+
+</head>
+
 <body>
-<h2>Catalogo PetShop</h2>
-<ul>
-{% for p in products %}
-<li>{{ p.name }} - {{ p.price }}</li>
-{% endfor %}
-</ul>
+
+<header>
+
+    <h2>🐾 PetShop Premium</h2>
+
+    <div class="menu">
+        #Inicio</a>
+        #Productos</a>
+        #Mi Cuenta</a>
+        /Cerrar Sesión</a>
+    </div>
+
+</header>
+
+<div class="banner">
+
+    Todo para tu mascota
+
+</div>
+
+<div class="products">
+
+    <div class="card">
+
+        https://images.unsplash.com/photo-1517849845537-4d257902454a
+
+        <div class="info">
+
+            <h3>Alimento Premium</h3>
+
+            <p>
+                Fórmula nutritiva para perros adultos.
+            </p>
+
+            <div class="price">$19.99</div>
+
+            <button>Agregar al carrito</button>
+
+        </div>
+
+    </div>
+
+    <div class="card">
+
+        https://images.unsplash.com/photo-1548199973-03cce0bbc87b
+
+        <div class="info">
+
+            <h3>Collar Inteligente</h3>
+
+            <p>
+                Collar con GPS integrado.
+            </p>
+
+            <div class="price">$29.99</div>
+
+            <button>Agregar al carrito</button>
+
+        </div>
+
+    </div>
+
+    <div class="card">
+
+        https://images.unsplash.com/photo-1450778869180-41d0601e046e
+
+        <div class="info">
+
+            <h3>Juguete Interactivo</h3>
+
+            <p>
+                Ideal para perros activos.
+            </p>
+
+            <div class="price">$12.99</div>
+
+            <button>Agregar al carrito</button>
+
+        </div>
+
+    </div>
+
+    <div class="card">
+
+        https://images.unsplash.com/photo-1583337130417-3346a1be7dee
+
+        <div class="info">
+
+            <h3>Cama Deluxe</h3>
+
+            <p>
+                Máximo confort para mascotas.
+            </p>
+
+            <div class="price">$49.99</div>
+
+            <button>Agregar al carrito</button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<footer>
+
+    © 2026 PetShop Cloud Platform
+
+    <br>
+
+    Azure App Service | Flask | GitHub Actions | MFA | Prometheus | Grafana
+
+</footer>
+
 </body>
 </html>

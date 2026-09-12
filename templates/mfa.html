@@ -1,10 +1,103 @@
-<html>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+
+    <meta charset="UTF-8">
+    <title>PetShop - MFA</title>
+
+    <style>
+
+        body{
+            margin:0;
+            font-family:'Segoe UI',sans-serif;
+            background:#f4f7fb;
+
+            display:flex;
+            justify-content:center;
+            align-items:center;
+
+            height:100vh;
+        }
+
+        .card{
+            background:white;
+            width:420px;
+            padding:40px;
+
+            border-radius:20px;
+
+            text-align:center;
+
+            box-shadow:0 5px 20px rgba(0,0,0,.20);
+        }
+
+        img{
+            width:90px;
+            margin-bottom:15px;
+        }
+
+        h2{
+            color:#1976d2;
+            margin-bottom:10px;
+        }
+
+        p{
+            color:#666;
+            margin-bottom:20px;
+        }
+
+        input{
+            width:100%;
+            padding:14px;
+            border:1px solid #ccc;
+            border-radius:10px;
+        }
+
+        button{
+            width:100%;
+            margin-top:15px;
+            padding:14px;
+            background:#4CAF50;
+            color:white;
+            border:none;
+            border-radius:10px;
+            cursor:pointer;
+        }
+
+        button:hover{
+            background:#43a047;
+        }
+
+    </style>
+
+</head>
+
 <body>
-<h2>Validacion MFA</h2>
-<form action='/verify' method='post'>
-Codigo:<br>
-<input name='code'><br><br>
-<button type='submit'>Validar</button>
-</form>
+
+<div class="card">
+
+    https://cdn-icons-png.flaticon.com/512/3064/3064197.png
+
+    <h2>Verificación MFA</h2>
+
+    <p>
+        Ingrese el código generado por Google Authenticator
+    </p>
+
+    <form method="POST">
+
+        <input
+            name="code"
+            placeholder="Código de 6 dígitos"
+            required>
+
+        <button type="submit">
+            Validar Código
+        </button>
+
+    </form>
+
+</div>
+
 </body>
 </html>
