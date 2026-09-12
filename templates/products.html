@@ -1,0 +1,10 @@
+<html>
+<body>
+<h2>Catalogo PetShop</h2>
+<ul>
+{% for p in products %}
+<li>{{ p.name }} - {{ p.price }}</li>
+{% endfor %}
+</ul>
+</body>
+</html>
