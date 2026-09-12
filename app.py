@@ -24,7 +24,7 @@ products=[
 def home():
     return render_template('login.html')
 
-@app.route('/login',methods=['POST'])
+@app.route('/login',methods=['GET','POST'])
 def login():
     user=request.form.get('username')
     password=request.form.get('password')
@@ -40,7 +40,7 @@ def login():
 def mfa():
     return render_template('mfa.html')
 
-@app.route('/verify',methods=['POST'])
+@app.route('/verify',methods=['GET','POST'])
 def verify():
     code=request.form.get('code')
     totp=pyotp.TOTP(TOTP_SECRET)
