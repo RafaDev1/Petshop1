@@ -98,8 +98,13 @@
     <p>
         Plataforma de productos para mascotas
     </p>
+    {% if error %}
+    <p style="color:red;">
+        {{ error }}
+    </p>
+    {% endif %}
 
-    <form method="POST">
+    /Login
 
         <input
             type="text"

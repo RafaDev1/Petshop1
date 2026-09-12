@@ -104,8 +104,13 @@ button:hover{
     <p>
         Ingrese el código generado por Google Authenticator
     </p>
+    {% if error %}
+    <p style="color:red;">
+        {{ error }}
+    </p>
+    {% endif %}
 
-    <form method="POST">
+    /verify
 
         <input
             type="text"

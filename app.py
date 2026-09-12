@@ -22,9 +22,10 @@ products=[
 
 @app.route('/')
 def home():
+    session.clear()
     return render_template('login.html')
 
-@app.route('/login',methods=['GET','POST'])
+@app.route('/login',methods=['POST'])
 def login():
     user=request.form.get('username')
     password=request.form.get('password')
@@ -34,13 +35,20 @@ def login():
         return redirect('/mfa')
 
     LOGIN_FAIL.inc()
-    return 'Invalid credentials'
+    return render_template(
+        'login.html',
+        error='Usuario o contraseña incorrectos'
+    )
 
 @app.route('/mfa')
 def mfa():
+    if not session.get('authenticated'):
+        return redirect('/')
+
     return render_template('mfa.html')
 
-@app.route('/verify',methods=['GET','POST'])
+
+@app.route('/verify',methods=['POST'])
 def verify():
     code=request.form.get('code')
     totp=pyotp.TOTP(TOTP_SECRET)
@@ -52,6 +60,13 @@ def verify():
 
     LOGIN_FAIL.inc()
     return 'Invalid MFA code'
+
+@app.route('/logout')
+def logout():
+
+    session.clear()
+
+    return redirect('/')
 
 @app.route('/products')
 def products_page():
