@@ -27,32 +27,22 @@ header{
 }
 
 .menu a{
+
     color:white;
     text-decoration:none;
+
     margin-left:20px;
 }
 
 .banner{
 
-    height:300px;
-
-    background:
-    linear-gradient(
-    rgba(0,0,0,.35),
-    rgba(0,0,0,.35)),
-    url('https://images.unsplash.com/photo-1517849845537-4d257902454a');
-
-    background-size:cover;
-    background-position:center;
+    background:#2196f3;
 
     color:white;
 
-    display:flex;
-    justify-content:center;
-    align-items:center;
+    text-align:center;
 
-    font-size:42px;
-    font-weight:bold;
+    padding:60px;
 }
 
 .products{
@@ -60,9 +50,9 @@ header{
     display:grid;
 
     grid-template-columns:
-    repeat(auto-fit,minmax(280px,1fr));
+    repeat(auto-fit,minmax(250px,1fr));
 
-    gap:25px;
+    gap:20px;
 
     padding:30px;
 }
@@ -75,54 +65,52 @@ header{
 
     overflow:hidden;
 
-    box-shadow:0 4px 15px rgba(0,0,0,.15);
+    box-shadow:
+    0 3px 10px rgba(0,0,0,.15);
 }
 
 .card img{
 
     width:100%;
-    height:220px;
+    height:200px;
 
     object-fit:cover;
 }
 
 .info{
-    padding:20px;
+
+    padding:15px;
 }
 
 .price{
-    color:#4CAF50;
-    font-size:24px;
+
+    font-size:22px;
+    color:#4caf50;
     font-weight:bold;
-    margin:10px 0;
 }
 
-button{
+.btn{
 
     width:100%;
-    padding:12px;
 
     border:none;
-    border-radius:10px;
 
     background:#1976d2;
+
     color:white;
+
+    padding:12px;
 
     cursor:pointer;
 }
 
-button:hover{
-    background:#0d5ab9;
-}
-
 footer{
 
-    margin-top:30px;
+    background:#222;
+
+    color:white;
 
     text-align:center;
-
-    background:#222;
-    color:white;
 
     padding:20px;
 }
@@ -138,17 +126,20 @@ footer{
     <h2>🐾 PetShop Premium</h2>
 
     <div class="menu">
-        #Inicio</a>
-        #Productos</a>
-        #Mi Cuenta</a>
-        /Cerrar Sesión</a>
+
+        /productsProductos</a>
+
+        /aboutAbout</a>
+
+        /logoutCerrar sesión</a>
+
     </div>
 
 </header>
 
 <div class="banner">
 
-    Todo para tu mascota
+    <h1>Todo para tu mascota</h1>
 
 </div>
 
@@ -163,12 +154,14 @@ footer{
             <h3>Alimento Premium</h3>
 
             <p>
-                Fórmula nutritiva para perros adultos.
+                Nutrición balanceada para perros.
             </p>
 
-            <div class="price">$19.99</div>
+            <p class="price">$19.99</p>
 
-            <button>Agregar al carrito</button>
+            <button class="btn">
+                Agregar al carrito
+            </button>
 
         </div>
 
@@ -186,49 +179,11 @@ footer{
                 Collar con GPS integrado.
             </p>
 
-            <div class="price">$29.99</div>
+            <p class="price">$29.99</p>
 
-            <button>Agregar al carrito</button>
-
-        </div>
-
-    </div>
-
-    <div class="card">
-
-        https://images.unsplash.com/photo-1450778869180-41d0601e046e
-
-        <div class="info">
-
-            <h3>Juguete Interactivo</h3>
-
-            <p>
-                Ideal para perros activos.
-            </p>
-
-            <div class="price">$12.99</div>
-
-            <button>Agregar al carrito</button>
-
-        </div>
-
-    </div>
-
-    <div class="card">
-
-        https://images.unsplash.com/photo-1583337130417-3346a1be7dee
-
-        <div class="info">
-
-            <h3>Cama Deluxe</h3>
-
-            <p>
-                Máximo confort para mascotas.
-            </p>
-
-            <div class="price">$49.99</div>
-
-            <button>Agregar al carrito</button>
+            <button class="btn">
+                Agregar al carrito
+            </button>
 
         </div>
 
@@ -238,11 +193,10 @@ footer{
 
 <footer>
 
-    © 2026 PetShop Cloud Platform
-
-    <br>
-
-    Azure App Service | Flask | GitHub Actions | MFA | Prometheus | Grafana
+    Azure App Service |
+    Azure Managed Grafana |
+    GitHub Actions |
+    MFA
 
 </footer>
 
