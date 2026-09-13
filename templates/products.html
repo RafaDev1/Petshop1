@@ -1,37 +1,10 @@
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>PetShop Productos</title>
-</head>
+<html>
 <body>
-
-    <h1>Catálogo PetShop</h1>
-
-    <p>
-        /logoutCerrar Sesión</a>
-    </p>
-
-    <hr>
-
-    {% for product in products %}
-
-        <div>
-
-            <h3>{{ product.name }}</h3>
-
-            <p>
-                Precio: {{ product.price }}
-            </p>
-
-            {% if product.image %}
-            {{ product.image }}
-            {% endif %}
-
-            <hr>
-
-        </div>
-
-    {% endfor %}
-
+<h2>Catalogo PetShop</h2>
+<ul>
+{% for p in products %}
+<li>{{ p.name }} - {{ p.price }}</li>
+{% endfor %}
+</ul>
 </body>
 </html>

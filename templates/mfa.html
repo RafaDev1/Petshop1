@@ -1,37 +1,10 @@
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>PetShop MFA</title>
-</head>
+<html>
 <body>
-
-    <h1>Verificación MFA</h1>
-
-    <p>
-        Ingrese el código de Google Authenticator
-    </p>
-
-    {% if error %}
-        <p style="color:red;">
-            {{ error }}
-        </p>
-    {% endif %}
-
-    /verify
-
-        <input
-            type="text"
-            name="code"
-            maxlength="6"
-            required>
-
-        <br><br>
-
-        <button type="submit">
-            Validar Código
-        </button>
-
-    </form>
-
+<h2>Validacion MFA</h2>
+<form action='/verify' method='post'>
+Codigo:<br>
+<input name='code'><br><br>
+<button type='submit'>Validar</button>
+</form>
 </body>
 </html>
