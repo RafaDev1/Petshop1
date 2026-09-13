@@ -1,11 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
 
-    <input
-        type="text"
-        name="code"
-        maxlength="6"
-        placeholder="Código MFA"
-        required>
-    <button type="submit">
-        Validar
-    </button>
+<meta charset="UTF-8">
+<title>MFA</title>
+
+<style>
+
+body{
+    margin:0;
+    background:white;
+    font-family:Arial;
+}
+
+.container{
+    max-width:450px;
+    margin:100px auto;
+    background:#f5f5f5;
+    padding:30px;
+    border-radius:15px;
+}
+
+h2{
+    text-align:center;
+    color:#555;
+}
+
+input{
+    width:100%;
+    padding:12px;
+    box-sizing:border-box;
+}
+
+button{
+    width:100%;
+    padding:12px;
+    margin-top:15px;
+    background:#6b7280;
+    color:white;
+    border:none;
+}
+
+.error{
+    color:red;
+    text-align:center;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>🔐 Verificación MFA</h2>
+
+/verify
+
+<input
+type="text"
+name="otp"
+maxlength="6"
+placeholder="Ingrese OTP"
+required>
+
+<button type="submit">
+Validar OTP
+</button>
+
 </form>
+
+{% if error %}
+<p class="error">{{ error }}</p>
+{% endif %}
+
+</div>
+
+</body>
+</html>

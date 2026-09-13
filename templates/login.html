@@ -1,18 +1,93 @@
-<html>
-<body>
-<h2>PetShop Login</h2>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>PetShop Login</title>
 
-    <input
-        type="text"
-        name="username"
-        required>
-    <input
-        type="password"
-        name="password"
-        required>
-    <button type="submit">
-        Iniciar Sesión
-    </button>
+<style>
+
+body{
+    margin:0;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#e5e7eb;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+.card{
+    width:380px;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 2px 20px rgba(0,0,0,0.2);
+}
+
+h2{
+    text-align:center;
+    color:#555;
+}
+
+input{
+    width:100%;
+    padding:12px;
+    margin-top:10px;
+    box-sizing:border-box;
+}
+
+button{
+    width:100%;
+    padding:12px;
+    margin-top:15px;
+    background:#6b7280;
+    border:none;
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.error{
+    color:red;
+    text-align:center;
+    margin-top:10px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="card">
+
+<h2>🐾 PetShop Login</h2>
+
+/login
+
+<input
+type="text"
+name="username"
+placeholder="Usuario"
+required>
+
+<input
+type="password"
+name="password"
+placeholder="Contraseña"
+required>
+
+<button type="submit">
+Iniciar Sesión
+</button>
+
 </form>
+
+{% if error %}
+<p class="error">{{ error }}</p>
+{% endif %}
+
+</div>
+
 </body>
 </html>

@@ -1,74 +1,68 @@
-from flask import Flask, render_template, request, redirect, session
+from flask import Flask, render_template, request, redirect, url_for, session
 import pyotp
+
 from prometheus_client import Counter, generate_latest
+from flask import Response
 
 app = Flask(__name__)
-app.secret_key = "petshop-secret"
+app.secret_key = "petshop-secret-key"
 
-LOGIN_SUCCESS = Counter(
-    "login_success_total",
-    "Successful login"
-)
-
-LOGIN_FAIL = Counter(
-    "login_fail_total",
-    "Failed login"
-)
-
+# Credenciales fijas
 USERNAME = "admin"
-PASSWORD = "PetShop123"
+PASSWORD = "Petshop1"
+
+# MFA
 TOTP_SECRET = "JBSWY3DPEHPK3PXP"
+totp = pyotp.TOTP(TOTP_SECRET)
+
+# Métricas
+login_success_total = Counter(
+    "login_success_total",
+    "Cantidad de logins exitosos"
+)
+
+login_fail_total = Counter(
+    "login_fail_total",
+    "Cantidad de logins fallidos"
+)
 
 products = [
-    {
-        "name": "Dog Food",
-        "price": "20 USD",
-        "image": "https://images.unsplash.com/photo-1517849845537-4d257902454a"
-    },
-    {
-        "name": "Cat Food",
-        "price": "15 USD",
-        "image": "https://images.unsplash.com/photo-1519052537078-e6302a4968d4"
-    },
-    {
-        "name": "Dog Toy",
-        "price": "8 USD",
-        "image": "https://images.unsplash.com/photo-1548199973-03cce0bbc87b"
-    },
-    {
-        "name": "Cat Toy",
-        "price": "7 USD",
-        "image": "https://images.unsplash.com/photo-1574158622682-e40e69881006"
-    },
-    {
-        "name": "Pet Shampoo",
-        "price": "12 USD",
-        "image": "https://images.unsplash.com/photo-1583511655826-05700d52f4d9"
-    }
+    {"id": 1, "name": "Concentrado Premium", "price": "$120.000"},
+    {"id": 2, "name": "Cama para Mascotas", "price": "$85.000"},
+    {"id": 3, "name": "Juguete Mordedor", "price": "$25.000"},
+    {"id": 4, "name": "Correa Ajustable", "price": "$40.000"},
+    {"id": 5, "name": "Arena para Gatos", "price": "$35.000"},
+    {"id": 6, "name": "Shampoo Canino", "price": "$28.000"}
 ]
 
 
 @app.route("/")
-def home():
-    session.clear()
+def index():
     return render_template("login.html")
 
 
 @app.route("/login", methods=["POST"])
 def login():
 
-    user = request.form.get("username")
-    password = request.form.get("password")
+    username = request.form.get("username", "").strip()
+    password = request.form.get("password", "").strip()
 
-    if user == USERNAME and password == PASSWORD:
+    if not username or not password:
+        return render_template(
+            "login.html",
+            error="Todos los campos son obligatorios."
+        )
+
+    if username == USERNAME and password == PASSWORD:
         session["authenticated"] = True
-        return redirect("/mfa")
+        login_success_total.inc()
+        return redirect(url_for("mfa"))
 
-    LOGIN_FAIL.inc()
+    login_fail_total.inc()
 
     return render_template(
         "login.html",
-        error="Usuario o contraseña incorrectos"
+        error="Usuario o contraseña incorrectos."
     )
 
 
@@ -76,7 +70,7 @@ def login():
 def mfa():
 
     if not session.get("authenticated"):
-        return redirect("/")
+        return redirect(url_for("index"))
 
     return render_template("mfa.html")
 
@@ -84,20 +78,36 @@ def mfa():
 @app.route("/verify", methods=["POST"])
 def verify():
 
-    code = request.form.get("code")
+    if not session.get("authenticated"):
+        return redirect(url_for("index"))
 
-    totp = pyotp.TOTP(TOTP_SECRET)
+    otp = request.form.get("otp", "").strip()
 
-    if totp.verify(code):
-        session["mfa"] = True
-        LOGIN_SUCCESS.inc()
-        return redirect("/products")
+    if not otp:
+        return render_template(
+            "mfa.html",
+            error="Debe ingresar el código OTP."
+        )
 
-    LOGIN_FAIL.inc()
+    if totp.verify(otp):
+        session["mfa_verified"] = True
+        return redirect(url_for("products_page"))
 
     return render_template(
         "mfa.html",
-        error="Código MFA inválido"
+        error="Código OTP inválido."
+    )
+
+
+@app.route("/products")
+def products_page():
+
+    if not session.get("mfa_verified"):
+        return redirect(url_for("index"))
+
+    return render_template(
+        "products.html",
+        products=products
     )
 
 
@@ -106,26 +116,16 @@ def logout():
 
     session.clear()
 
-    return redirect("/")
-
-
-@app.route("/products")
-def products_page():
-
-    if not session.get("mfa"):
-        return redirect("/")
-
-    return render_template(
-        "products.html",
-        products=products
-    )
+    return redirect(url_for("index"))
 
 
 @app.route("/metrics")
 def metrics():
-
-    return generate_latest()
+    return Response(
+        generate_latest(),
+        mimetype="text/plain"
+    )
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(host="0.0.0.0", port=5000)
