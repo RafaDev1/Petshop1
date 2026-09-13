@@ -1,43 +1,31 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 import pyotp
 
-from prometheus_client import Counter, generate_latest
-from flask import Response
-
 app = Flask(__name__)
 app.secret_key = "petshop-secret-key"
 
-# Credenciales fijas
 USERNAME = "admin"
 PASSWORD = "Petshop1"
 
-# MFA
 TOTP_SECRET = "JBSWY3DPEHPK3PXP"
 totp = pyotp.TOTP(TOTP_SECRET)
 
-# Métricas
-login_success_total = Counter(
-    "login_success_total",
-    "Cantidad de logins exitosos"
-)
-
-login_fail_total = Counter(
-    "login_fail_total",
-    "Cantidad de logins fallidos"
-)
-
-products = [
-    {"id": 1, "name": "Concentrado Premium", "price": "$120.000"},
-    {"id": 2, "name": "Cama para Mascotas", "price": "$85.000"},
-    {"id": 3, "name": "Juguete Mordedor", "price": "$25.000"},
-    {"id": 4, "name": "Correa Ajustable", "price": "$40.000"},
-    {"id": 5, "name": "Arena para Gatos", "price": "$35.000"},
-    {"id": 6, "name": "Shampoo Canino", "price": "$28.000"}
+PRODUCTS = [
+    {"name": "Concentrado Premium", "price": "$120.000"},
+    {"name": "Cama para Mascotas", "price": "$85.000"},
+    {"name": "Correa Ajustable", "price": "$35.000"},
+    {"name": "Shampoo Canino", "price": "$25.000"},
+    {"name": "Arena para Gatos", "price": "$40.000"},
+    {"name": "Rascador", "price": "$65.000"},
+    {"name": "Juguete Mordedor", "price": "$15.000"},
+    {"name": "Comedero", "price": "$20.000"},
+    {"name": "Bebedero", "price": "$18.000"},
+    {"name": "Transportador", "price": "$95.000"}
 ]
 
 
 @app.route("/")
-def index():
+def home():
     return render_template("login.html")
 
 
@@ -54,11 +42,8 @@ def login():
         )
 
     if username == USERNAME and password == PASSWORD:
-        session["authenticated"] = True
-        login_success_total.inc()
+        session["login_ok"] = True
         return redirect(url_for("mfa"))
-
-    login_fail_total.inc()
 
     return render_template(
         "login.html",
@@ -69,8 +54,8 @@ def login():
 @app.route("/mfa")
 def mfa():
 
-    if not session.get("authenticated"):
-        return redirect(url_for("index"))
+    if not session.get("login_ok"):
+        return redirect(url_for("home"))
 
     return render_template("mfa.html")
 
@@ -78,36 +63,36 @@ def mfa():
 @app.route("/verify", methods=["POST"])
 def verify():
 
-    if not session.get("authenticated"):
-        return redirect(url_for("index"))
+    if not session.get("login_ok"):
+        return redirect(url_for("home"))
 
     otp = request.form.get("otp", "").strip()
 
     if not otp:
         return render_template(
             "mfa.html",
-            error="Debe ingresar el código OTP."
+            error="Debe ingresar el código."
         )
 
     if totp.verify(otp):
-        session["mfa_verified"] = True
-        return redirect(url_for("products_page"))
+        session["mfa_ok"] = True
+        return redirect(url_for("products"))
 
     return render_template(
         "mfa.html",
-        error="Código OTP inválido."
+        error="Código MFA inválido."
     )
 
 
 @app.route("/products")
-def products_page():
+def products():
 
-    if not session.get("mfa_verified"):
-        return redirect(url_for("index"))
+    if not session.get("mfa_ok"):
+        return redirect(url_for("home"))
 
     return render_template(
         "products.html",
-        products=products
+        products=PRODUCTS
     )
 
 
@@ -116,15 +101,7 @@ def logout():
 
     session.clear()
 
-    return redirect(url_for("index"))
-
-
-@app.route("/metrics")
-def metrics():
-    return Response(
-        generate_latest(),
-        mimetype="text/plain"
-    )
+    return redirect(url_for("home"))
 
 
 if __name__ == "__main__":
