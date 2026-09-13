@@ -1,12 +1,10 @@
-<h2>Productos</h2>
-
-/logoutLogout</a>
-
+<html>
+<body>
+<h2>Catalogo PetShop</h2>
 <ul>
 {% for p in products %}
-    <li>
-        {{ p.name }} - {{ p.price }}
-        <button>Agregar</button>
-    </li>
+<li>{{ p.name }} - {{ p.price }}</li>
 {% endfor %}
 </ul>
+</body>
+</html>

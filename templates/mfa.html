@@ -1,15 +1,10 @@
-/verify
-
-    <h2>MFA</h2>
-
-    <label>OTP</label>
-    <input type="text"
-           name="otp"
-           maxlength="6"
-           required>
-
-    <button type="submit">
-        Validar
-    </button>
-
+<html>
+<body>
+<h2>Validacion MFA</h2>
+<form action='/verify' method='post'>
+Codigo:<br>
+<input name='code'><br><br>
+<button type='submit'>Validar</button>
 </form>
+</body>
+</html>
