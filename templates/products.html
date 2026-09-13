@@ -1,82 +1,21 @@
-<html lang="es">
-
+<!DOCTYPE html>
+<html>
 <head>
-
 <meta charset="UTF-8">
-
 <title>PetShop Store</title>
-
-<style>
-
-body{
-    font-family: Arial;
-    background:#f2f2f2;
-    margin:0;
-}
-
-.navbar{
-    background:#666666;
-    padding:15px;
-}
-
-.navbar a{
-    color:white;
-    text-decoration:none;
-    margin-right:20px;
-}
-
-.products{
-    width:80%;
-    margin:20px auto;
-}
-
-.card{
-    background:white;
-    padding:15px;
-    margin-bottom:10px;
-    border-radius:6px;
-    box-shadow:0 0 5px #cccccc;
-}
-
-button{
-    padding:8px 15px;
-    background:#666666;
-    color:white;
-    border:0;
-}
-
-</style>
-
 </head>
-
 <body>
-
-<div class="navbar">
-    /productsProductos</a>
-    /logoutLogout</a>
-</div>
-
-<div class="products">
-
 <h2>Tienda de Mascotas</h2>
-
+<a href="/products">Productos</a> |
+<a href="/logout">Logout</a>
+<hr>
 {% for product in products %}
-
-<div class="card">
-
+<div>
 <h3>{{ product.name }}</h3>
-
-<p>{{ product.price }}</p>
-
-<button>
-Agregar al Carrito
-</button>
-
+<p>Precio: {{ product.price }}</p>
+<button>Agregar al carrito</button>
 </div>
-
+<hr>
 {% endfor %}
-
-</div>
-
 </body>
 </html>

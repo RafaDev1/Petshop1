@@ -1,77 +1,18 @@
-<html lang="es">
-
+<!DOCTYPE html>
+<html>
 <head>
 <meta charset="UTF-8">
 <title>MFA</title>
-
-<style>
-
-body{
-    font-family: Arial;
-    background:#f2f2f2;
-}
-
-.container{
-    width:350px;
-    margin:120px auto;
-    background:white;
-    padding:25px;
-    border-radius:8px;
-    box-shadow:0 0 10px #cccccc;
-}
-
-input{
-    width:100%;
-    padding:10px;
-    margin-top:5px;
-    margin-bottom:15px;
-    box-sizing:border-box;
-}
-
-button{
-    width:100%;
-    padding:10px;
-    background:#666666;
-    color:white;
-    border:0;
-}
-
-.error{
-    color:red;
-    text-align:center;
-}
-
-</style>
 </head>
-
 <body>
-
-<div class="container">
-
 <h2>Verificación MFA</h2>
-
-/verify
-
-<label>Código MFA</label>
-
-<input
-    type="text"
-    name="otp"
-    maxlength="6"
-    pattern="[0-9]{6}"
-    required>
-
-<button type="submit">
-Validar
-</button>
-
+<form action="/verify" method="post">
+<label>Código MFA</label><br>
+<input type="text" name="otp" maxlength="6" pattern="[0-9]{6}" required><br><br>
+<button type="submit">Validar</button>
 </form>
-
 {% if error %}
-<p class="error">{{ error }}</p>
+<p style="color:red;">{{ error }}</p>
 {% endif %}
-
-</div>
-
 </body>
 </html>
