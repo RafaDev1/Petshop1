@@ -1,12 +1,7 @@
-<!DOCTYPE html>
-<html>
-<body>
 <h2>Catálogo de Productos</h2>
 <ul>
-{% for p in products %}
-  <li>{{ p.name }} - ${{ p.price }} <button>Agregar al carrito</button></li>
-{% endfor %}
+  {% for p in productos %}
+    <li>{{p.nombre}} - {{p.precio}} <button>Agregar al carrito</button></li>
+  {% endfor %}
 </ul>
 <a href="/logout">Logout</a>
-</body>
-</html>
