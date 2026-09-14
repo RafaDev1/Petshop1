@@ -1,48 +1,14 @@
 <!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>PetShop - Registro</title>
-</head>
+<html>
 <body>
-    <h2>Registro de Usuario - PetShop</h2>
-    {% if error %}
-        <p style="color: red;">{{ error }}</p>
-    {% endif %}
-    {% if success %}
-        <p style="color: green;">{{ success }}</p>
-        {% if qr_code %}
-            <p>Escanea este código QR con Google Authenticator:</p>
-            <img src="data:image/png;base64,{{ qr_code }}" alt="QR Code MFA">
-        {% endif %}
-        <br><br>
-        <a href="/login"><button type="button">Ir al Login</button></a>
-    {% else %}
-        <form action="/signin" method="POST">
-            <div>
-                <label>Usuario:</label><br>
-                <input type="text" name="username" required>
-            </div>
-            <div>
-                <label>Contraseña:</label><br>
-                <input type="password" name="password" required>
-            </div>
-            <div>
-                <label>Nombre completo:</label><br>
-                <input type="text" name="real_name" required>
-            </div>
-            <div>
-                <label>Dirección:</label><br>
-                <input type="text" name="address" required>
-            </div>
-            <div>
-                <label>Teléfono:</label><br>
-                <input type="text" name="phone" required>
-            </div>
-            <br>
-            <button type="submit">Registrarse</button>
-        </form>
-        <p>¿Ya tienes cuenta? <a href="/login">Inicia sesión</a></p>
-    {% endif %}
+<h2>Registro</h2>
+<form method="POST">
+  Usuario: <input type="text" name="username" required><br>
+  Contraseña: <input type="password" name="password" required><br>
+  Nombre completo: <input type="text" name="real_name" required><br>
+  Dirección: <input type="text" name="address" required><br>
+  Teléfono: <input type="text" name="phone" required><br>
+  <button type="submit">Registrar</button>
+</form>
 </body>
 </html>

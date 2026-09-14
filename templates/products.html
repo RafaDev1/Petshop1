@@ -1,27 +1,12 @@
 <!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>PetShop - Catálogo</title>
-</head>
+<html>
 <body>
-    <header>
-        <h1>PetShop - Catálogo de Productos</h1>
-        <nav>
-            <a href="/products">Products</a> | 
-            <a href="/logout">Logout</a>
-        </nav>
-    </header>
-    <hr>
-    <h2>Nuestros Productos</h2>
-    <ul>
-        {% for p in products %}
-            <li>
-                <strong>{{ p.name }}</strong> - {{ p.price }} 
-                <button onclick="alert('¡Producto agregado al carrito!')">Agregar al carrito</button>
-            </li>
-            <br>
-        {% endfor %}
-    </ul>
+<h2>Catálogo de Productos</h2>
+<ul>
+{% for p in products %}
+  <li>{{ p.name }} - ${{ p.price }} <button>Agregar al carrito</button></li>
+{% endfor %}
+</ul>
+<a href="/logout">Logout</a>
 </body>
 </html>
