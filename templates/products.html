@@ -1,7 +1,9 @@
+<!doctype html>
+<title>Productos - PetShop</title>
 <h2>Catálogo de Productos</h2>
 <ul>
   {% for p in productos %}
-    <li>{{p.nombre}} - {{p.precio}} <button>Agregar al carrito</button></li>
+    <li>{{p.nombre}} - {{p.precio}}</li>
   {% endfor %}
 </ul>
 <a href="/logout">Logout</a>

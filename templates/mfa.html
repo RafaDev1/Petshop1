@@ -1,3 +1,7 @@
+<!doctype html>
+<title>MFA - PetShop</title>
+<h2>Verificación MFA</h2>
+{% if error %}<p style="color:red">{{error}}</p>{% endif %}
 <form method="POST">
   Código OTP: <input type="text" name="otp" required><br>
   <button type="submit">Verificar</button>

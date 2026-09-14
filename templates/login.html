@@ -1,3 +1,7 @@
+<!doctype html>
+<title>Login - PetShop</title>
+<h2>Login</h2>
+{% if error %}<p style="color:red">{{error}}</p>{% endif %}
 <form method="POST">
   Usuario: <input type="text" name="username" required><br>
   Contraseña: <input type="password" name="password" required><br>

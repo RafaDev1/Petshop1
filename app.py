@@ -1,17 +1,33 @@
-from flask import Flask, render_template, request, redirect, session
+# app.py
+import os
+from flask import Flask, render_template, request, redirect, session, jsonify
 from flask_sqlalchemy import SQLAlchemy
 import pyotp, qrcode, io, base64
-from prometheus_client import Counter, generate_latest
+from prometheus_client import Counter, generate_latest, CONTENT_TYPE_LATEST
+from prometheus_client import multiprocess, CollectorRegistry
 
-app = Flask(__name__)
-app.secret_key = "supersecretkey"
+app = Flask(__name__, template_folder="templates")
+app.secret_key = os.environ.get("FLASK_SECRET", "change_this_secret_for_prod")
 
-# Configuración Azure SQL Database
-app.config['SQLALCHEMY_DATABASE_URI'] = "mssql+pyodbc://usuario:password@petshopsql.database.windows.net/PetShopDB?driver=ODBC+Driver+18+for+SQL+Server"
+# Configuración de la DB desde variables de entorno
+# Espera: DB_USER, DB_PASSWORD, DB_SERVER, DB_NAME
+db_user = os.environ.get("DB_USER", "sa")
+db_password = os.environ.get("DB_PASSWORD", "YourStrong!Passw0rd")
+db_server = os.environ.get("DB_SERVER", "petshopsql.database.windows.net")
+db_name = os.environ.get("DB_NAME", "PetShopDB")
+
+# Usamos pyodbc driver 18; escape de caracteres en password si necesario
+# SQLAlchemy URI para SQL Server
+app.config['SQLALCHEMY_DATABASE_URI'] = (
+    f"mssql+pyodbc://{db_user}:{db_password}@{db_server}/{db_name}"
+    "?driver=ODBC+Driver+18+for+SQL+Server&Encrypt=yes&TrustServerCertificate=no"
+)
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 # Modelo Usuario
 class User(db.Model):
+    __tablename__ = "Users"
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), unique=True, nullable=False)
     password = db.Column(db.String(100), nullable=False)
@@ -21,20 +37,30 @@ class User(db.Model):
     totp_secret = db.Column(db.String(32), nullable=False)
 
 # Métricas Prometheus
-login_success_total = Counter("login_success_total", "Total logins exitosos")
-login_fail_total = Counter("login_fail_total", "Total logins fallidos")
+login_success_total = Counter("petshop_login_success_total", "Total logins exitosos")
+login_fail_total = Counter("petshop_login_fail_total", "Total logins fallidos")
+requests_total = Counter("petshop_requests_total", "Total peticiones recibidas", ['endpoint'])
+
+@app.before_request
+def before_request_metrics():
+    # Incrementa contador por endpoint
+    try:
+        endpoint = request.path
+        requests_total.labels(endpoint=endpoint).inc()
+    except Exception:
+        pass
 
 @app.route("/signin", methods=["GET","POST"])
 def signin():
     if request.method == "POST":
-        username = request.form["username"]
+        username = request.form["username"].strip()
         password = request.form["password"]
         real_name = request.form["real_name"]
         address = request.form["address"]
         phone = request.form["phone"]
 
         if User.query.filter_by(username=username).first():
-            return "Usuario ya existe"
+            return "Usuario ya existe", 400
 
         secret = pyotp.random_base32()
         user = User(username=username, password=password, real_name=real_name, address=address, phone=phone, totp_secret=secret)
@@ -47,13 +73,13 @@ def signin():
         qr.save(buf, format="PNG")
         qr_b64 = base64.b64encode(buf.getvalue()).decode()
 
-        return f"<h3>Registro exitoso</h3><img src='data:image/png;base64,{qr_b64}'/><br><a href='/login'>Ir al Login</a>"
-    return render_template("signin.html")
+        return render_template("signin.html", qr_b64=qr_b64, registered=True)
+    return render_template("signin.html", registered=False)
 
 @app.route("/login", methods=["GET","POST"])
 def login():
     if request.method == "POST":
-        username = request.form["username"]
+        username = request.form["username"].strip()
         password = request.form["password"]
         user = User.query.filter_by(username=username, password=password).first()
         if user:
@@ -63,19 +89,21 @@ def login():
             return redirect("/mfa")
         else:
             login_fail_total.inc()
-            return "Credenciales inválidas"
+            return render_template("login.html", error="Credenciales inválidas")
     return render_template("login.html")
 
 @app.route("/mfa", methods=["GET","POST"])
 def mfa():
+    if not session.get("login_ok"):
+        return redirect("/login")
     if request.method == "POST":
-        otp = request.form["otp"]
+        otp = request.form["otp"].strip()
         user = User.query.filter_by(username=session["username"]).first()
-        if pyotp.TOTP(user.totp_secret).verify(otp):
+        if user and pyotp.TOTP(user.totp_secret).verify(otp):
             session["mfa_ok"] = True
             return redirect("/products")
         else:
-            return "OTP inválido"
+            return render_template("mfa.html", error="OTP inválido")
     return render_template("mfa.html")
 
 @app.route("/products")
@@ -88,11 +116,6 @@ def products():
         {"nombre":"Juguete","precio":"$15"},
         {"nombre":"Cama","precio":"$50"},
         {"nombre":"Arena","precio":"$12"},
-        {"nombre":"Transportadora","precio":"$40"},
-        {"nombre":"Shampoo","precio":"$8"},
-        {"nombre":"Plato","precio":"$5"},
-        {"nombre":"Correa","precio":"$18"},
-        {"nombre":"Snacks","precio":"$7"},
     ]
     return render_template("products.html", productos=productos)
 
@@ -103,4 +126,15 @@ def logout():
 
 @app.route("/metrics")
 def metrics():
-    return generate_latest()
+    # Responder métricas Prometheus
+    registry = CollectorRegistry()
+    # Si usas multiprocess mode en App Service, necesitarías configurar multiprocess; para demo simple usamos default
+    from prometheus_client import generate_latest
+    resp = generate_latest()
+    return (resp, 200, {'Content-Type': CONTENT_TYPE_LATEST})
+
+if __name__ == "__main__":
+    # Crear tablas si no existen (solo para desarrollo)
+    with app.app_context():
+        db.create_all()
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 8000)))

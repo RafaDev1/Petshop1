@@ -1,3 +1,11 @@
+<!doctype html>
+<title>Registro - PetShop</title>
+<h2>Registro</h2>
+{% if registered %}
+  <p>Registro exitoso. Escanea el QR con Google Authenticator:</p>
+  <img src="data:image/png;base64,{{qr_b64}}" alt="QR TOTP"/>
+  <p><a href="/login">Ir al Login</a></p>
+{% else %}
 <form method="POST">
   Usuario: <input type="text" name="username" required><br>
   Contraseña: <input type="password" name="password" required><br>
@@ -6,3 +14,4 @@
   Teléfono: <input type="text" name="phone" required><br>
   <button type="submit">Registrar</button>
 </form>
+{% endif %}
