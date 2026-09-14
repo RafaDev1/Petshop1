@@ -1,20 +1,26 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-<meta charset="UTF-8">
-<title>PetShop Login</title>
+    <meta charset="UTF-8">
+    <title>PetShop - Login</title>
 </head>
 <body>
-<h2>PetShop Login</h2>
-<form action="/login" method="post">
-<label>Usuario</label><br>
-<input type="text" name="username" required><br><br>
-<label>Contraseña</label><br>
-<input type="password" name="password" required><br><br>
-<button type="submit">Ingresar</button>
-</form>
-{% if error %}
-<p style="color:red;">{{ error }}</p>
-{% endif %}
+    <h2>Iniciar Sesión - PetShop</h2>
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+    <form action="/login" method="POST">
+        <div>
+            <label>Usuario:</label><br>
+            <input type="text" name="username" required>
+        </div>
+        <div>
+            <label>Contraseña:</label><br>
+            <input type="password" name="password" required>
+        </div>
+        <br>
+        <button type="submit">Entrar</button>
+    </form>
+    <p>¿No tienes cuenta? <a href="/signin">Regístrate aquí</a></p>
 </body>
 </html>
